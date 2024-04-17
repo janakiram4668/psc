@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to the Teacher Dashboard</h1>
+    <p>This is where you can manage your courses.</p>
+    
+    <h2>Create a New Course</h2>
+    <a href="{{ url_for('create_course') }}">Create Course</a>
+
+    <h2>My Courses</h2>
+    <ul>
+        {% for course in courses %}
+            <li>{{ course.course_name }} - {{ course.duration }}</li>
+        {% endfor %}
+    </ul>
+    
+    <form action="{{ url_for('my_courses') }}" method="GET">
+        <button type="submit">My Courses</button>
+    </form>
+</body>
+</html>
