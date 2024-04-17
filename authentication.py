@@ -19,7 +19,7 @@ class User(UserMixin, db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.query(User).get(int(user_id))
 
 # Define Course model
 class Course(db.Model):
@@ -80,7 +80,32 @@ def logout():
 @app.route('/student/dashboard')
 @login_required
 def student_dashboard():
-    return "Welcome to the student dashboard!"
+    courses = Course.query.all()
+    return render_template('student_dashboard.html', courses=courses)
+
+from flask import redirect
+
+@app.route('/enroll_course/<int:course_id>', methods=['POST'])
+@login_required
+def enroll_course(course_id):
+    # Retrieve the selected course
+    course = Course.query.get(course_id)
+    
+    # Add the selected course to the list of enrolled courses for the current user
+    current_user.enrolled_courses.append(course)
+    
+    # Save the changes to the database
+    db.session.commit()
+    
+    # Redirect to the student dashboard
+    return redirect(url_for('student_dashboard'))
+
+@app.route('/all_courses')
+@login_required
+def all_courses():
+    all_courses = Course.query.all()
+    return render_template('all_courses.html', all_courses=all_courses)
+
 
 @app.route('/teacher/dashboard')
 @login_required
