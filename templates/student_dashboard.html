@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to the Student Dashboard</h1>
+    <a href="{{ url_for('all_courses') }}"><button>View All Courses</button></a>
+    <h2>Enrolled Courses</h2>
+    <ul>
+        {% for course in available_courses %}
+            <li>{{ course.course_name }} - {{ course.duration }} - {{ course.cost }}
+                <form action="{{ url_for('enroll_course', course_id=course.id) }}" method="post">
+                    <button type="submit">Enroll</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
